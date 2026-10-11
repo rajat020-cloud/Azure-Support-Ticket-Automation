@@ -1,0 +1,57 @@
+name: Deploy Backend API to Azure App Service (Manual OIDC)
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment_note:
+        description: 'Reason or release note for manual Azure App Service deployment'
+        required: false
+        default: 'Manual deployment from GitHub Actions via OIDC'
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  build-and-deploy:
+    name: Build & Deploy to Azure App Service
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 1. Check out repository
+        uses: actions/checkout@v4
+
+      - name: 2. Set up Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: backend/package-lock.json
+
+      - name: 3. Install backend dependencies and run verification tests
+        working-directory: ./backend
+        env:
+          NODE_ENV: test
+          REVIEWER_API_KEY: ci-predeploy-verification-key
+        run: |
+          npm ci
+          npm run typecheck
+          npm test
+          npm run build
+
+      - name: 4. Prune development dependencies for production artifact
+        working-directory: ./backend
+        run: npm prune --omit=dev
+
+      - name: 5. Authenticate to Azure via OpenID Connect (OIDC Federated Identity)
+        uses: azure/login@v2
+        with:
+          client-id: ${{ vars.AZURE_CLIENT_ID }}
+          tenant-id: ${{ vars.AZURE_TENANT_ID }}
+          subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+
+      - name: 6. Deploy backend package to Azure App Service
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: ${{ vars.AZURE_WEBAPP_NAME }}
+          package: ./backend

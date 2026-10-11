@@ -1,0 +1,86 @@
+[
+  {
+    "ticketId": "TEST-2001",
+    "message": "Our latest monthly invoice shows an unexpected overage charge of $620 after our trial promo code was applied. Can billing check our statement and refund the difference?",
+    "expectedCategory": "Billing",
+    "expectedPriority": "Medium",
+    "expectedAssignedTeam": "Billing Support"
+  },
+  {
+    "ticketId": "TEST-2002",
+    "message": "Please update the billing contact email address and VAT registration number on our subscription account for future receipts.",
+    "expectedCategory": "Billing",
+    "expectedPriority": "Low",
+    "expectedAssignedTeam": "Billing Support"
+  },
+  {
+    "ticketId": "TEST-2003",
+    "message": "Urgent billing issue: our automated ACH payment bounced and the portal says our production subscription will be terminated in 24 hours unless payment clears.",
+    "expectedCategory": "Billing",
+    "expectedPriority": "High",
+    "expectedAssignedTeam": "Billing Support"
+  },
+  {
+    "ticketId": "TEST-2004",
+    "message": "Complete production outage! Our primary cluster crashed with a kernel panic and HTTP 500 errors, blocking all 1,200 active users from processing transactions.",
+    "expectedCategory": "Technical",
+    "expectedPriority": "Critical",
+    "expectedAssignedTeam": "Technical Support"
+  },
+  {
+    "ticketId": "TEST-2005",
+    "message": "The REST API endpoint /v2/reports/export is throwing a 504 gateway timeout bug whenever the payload exceeds 10MB.",
+    "expectedCategory": "Technical",
+    "expectedPriority": "Medium",
+    "expectedAssignedTeam": "Technical Support"
+  },
+  {
+    "ticketId": "TEST-2006",
+    "message": "Memory leak in the container deployment causes high CPU utilization and slow response latency on our web worker nodes.",
+    "expectedCategory": "Technical",
+    "expectedPriority": "High",
+    "expectedAssignedTeam": "Technical Support"
+  },
+  {
+    "ticketId": "TEST-2007",
+    "message": "I am locked out of my account after entering the wrong password three times, and the password reset link says my token has expired.",
+    "expectedCategory": "Access",
+    "expectedPriority": "High",
+    "expectedAssignedTeam": "Identity and Access Support"
+  },
+  {
+    "ticketId": "TEST-2008",
+    "message": "Could you assign Read-Only role permissions to our external auditor's user account so they can sign in to the compliance dashboard?",
+    "expectedCategory": "Access",
+    "expectedPriority": "Low",
+    "expectedAssignedTeam": "Identity and Access Support"
+  },
+  {
+    "ticketId": "TEST-2009",
+    "message": "Security breach alert: we detected compromised API credentials and unauthorized SSO login activity on our admin tenant. Lock the account and revoke tokens immediately!",
+    "expectedCategory": "Access",
+    "expectedPriority": "Critical",
+    "expectedAssignedTeam": "Identity and Access Support"
+  },
+  {
+    "ticketId": "TEST-2010",
+    "message": "Do you have user guides or training documentation explaining best practices for organizing project workspaces?",
+    "expectedCategory": "General",
+    "expectedPriority": "Low",
+    "expectedAssignedTeam": "General Support"
+  },
+  {
+    "ticketId": "TEST-2011",
+    "message": "We would like to request information about your ISO 27001 security certification and general SLA policy before our procurement deadline tomorrow.",
+    "expectedCategory": "General",
+    "expectedPriority": "High",
+    "expectedAssignedTeam": "General Support"
+  },
+  {
+    "ticketId": "TEST-2012",
+    "message": "Hello team, I have a general question regarding your upcoming webinar schedule and feature roadmap for next quarter.",
+    "expectedCategory": "General",
+    "expectedPriority": "Low",
+    "expectedAssignedTeam": "General Support"
+  }
+]

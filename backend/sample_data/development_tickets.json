@@ -1,0 +1,170 @@
+[
+  {
+    "ticketId": "DEV-1001",
+    "message": "We were charged twice on our monthly Azure subscription invoice INV-88421 for $1,450. Please review the duplicate charge and issue a billing credit.",
+    "expectedCategory": "Billing",
+    "expectedPriority": "Medium",
+    "expectedAssignedTeam": "Billing Support"
+  },
+  {
+    "ticketId": "DEV-1002",
+    "message": "Our corporate credit card on file expired and the payment for our production tenant failed. How do we update the payment method before our account is suspended tomorrow?",
+    "expectedCategory": "Billing",
+    "expectedPriority": "High",
+    "expectedAssignedTeam": "Billing Support"
+  },
+  {
+    "ticketId": "DEV-1003",
+    "message": "Can you send a downloadable PDF receipt and tax invoice with our updated GST number for last month's billing cycle?",
+    "expectedCategory": "Billing",
+    "expectedPriority": "Low",
+    "expectedAssignedTeam": "Billing Support"
+  },
+  {
+    "ticketId": "DEV-1004",
+    "message": "Why did our bandwidth usage cost jump by 300% on the current statement? We thought we were on the reserved capacity pricing tier.",
+    "expectedCategory": "Billing",
+    "expectedPriority": "Medium",
+    "expectedAssignedTeam": "Billing Support"
+  },
+  {
+    "ticketId": "DEV-1005",
+    "message": "We cancelled two developer seats three weeks ago, yet our latest renewal bill still includes the license fees for those removed seats.",
+    "expectedCategory": "Billing",
+    "expectedPriority": "Medium",
+    "expectedAssignedTeam": "Billing Support"
+  },
+  {
+    "ticketId": "DEV-1006",
+    "message": "I would like to switch our billing frequency from monthly to annual invoicing via wire transfer purchase order.",
+    "expectedCategory": "Billing",
+    "expectedPriority": "Low",
+    "expectedAssignedTeam": "Billing Support"
+  },
+  {
+    "ticketId": "DEV-1007",
+    "message": "Production API gateway is returning HTTP 502 Bad Gateway errors across all regional endpoints since 09:15 UTC. All 500+ enterprise customers are experiencing a complete service outage.",
+    "expectedCategory": "Technical",
+    "expectedPriority": "Critical",
+    "expectedAssignedTeam": "Technical Support"
+  },
+  {
+    "ticketId": "DEV-1008",
+    "message": "The webhook integration with our staging server keeps failing with a TLS handshake timeout error when dispatching payload events.",
+    "expectedCategory": "Technical",
+    "expectedPriority": "Medium",
+    "expectedAssignedTeam": "Technical Support"
+  },
+  {
+    "ticketId": "DEV-1009",
+    "message": "Our Node.js worker pods on App Service are crashing repeatedly with OutOfMemory exceptions after deploying build v2.4.1.",
+    "expectedCategory": "Technical",
+    "expectedPriority": "High",
+    "expectedAssignedTeam": "Technical Support"
+  },
+  {
+    "ticketId": "DEV-1010",
+    "message": "Database query latency spiked to 12 seconds and connection pool exhaustion is causing intermittent 504 timeouts for checkout users.",
+    "expectedCategory": "Technical",
+    "expectedPriority": "High",
+    "expectedAssignedTeam": "Technical Support"
+  },
+  {
+    "ticketId": "DEV-1011",
+    "message": "The CSV export button on the analytics dashboard throws a TypeError in Chrome console when filtering date ranges longer than 60 days.",
+    "expectedCategory": "Technical",
+    "expectedPriority": "Low",
+    "expectedAssignedTeam": "Technical Support"
+  },
+  {
+    "ticketId": "DEV-1012",
+    "message": "Background cron job for nightly log archival stopped executing after the scheduled maintenance window and shows status code ERR_SOCKET_CLOSED.",
+    "expectedCategory": "Technical",
+    "expectedPriority": "Medium",
+    "expectedAssignedTeam": "Technical Support"
+  },
+  {
+    "ticketId": "DEV-1013",
+    "message": "I cannot log into my account after resetting my password. The MFA authenticator code is being rejected with 'Invalid verification token'.",
+    "expectedCategory": "Access",
+    "expectedPriority": "High",
+    "expectedAssignedTeam": "Identity and Access Support"
+  },
+  {
+    "ticketId": "DEV-1014",
+    "message": "Please grant RBAC Contributor permissions to our new DevOps lead (priya.sharma@example.org) for the staging resource group.",
+    "expectedCategory": "Access",
+    "expectedPriority": "Low",
+    "expectedAssignedTeam": "Identity and Access Support"
+  },
+  {
+    "ticketId": "DEV-1015",
+    "message": "Our entire engineering team of 80 users is locked out of the portal because SAML Single Sign-On (SSO) federation with Entra ID is failing with AADSTS50011.",
+    "expectedCategory": "Access",
+    "expectedPriority": "Critical",
+    "expectedAssignedTeam": "Identity and Access Support"
+  },
+  {
+    "ticketId": "DEV-1016",
+    "message": "My two-factor authentication device was lost and I need an administrator to reset my 2FA enrollment so I can sign in again.",
+    "expectedCategory": "Access",
+    "expectedPriority": "Medium",
+    "expectedAssignedTeam": "Identity and Access Support"
+  },
+  {
+    "ticketId": "DEV-1017",
+    "message": "An employee left the company today and we noticed unauthorized login attempts on their service principal credentials. Please revoke access immediately.",
+    "expectedCategory": "Access",
+    "expectedPriority": "Critical",
+    "expectedAssignedTeam": "Identity and Access Support"
+  },
+  {
+    "ticketId": "DEV-1018",
+    "message": "I am getting a 403 Forbidden Access Denied screen when trying to view the audit logs page even though my role is Security Reader.",
+    "expectedCategory": "Access",
+    "expectedPriority": "Medium",
+    "expectedAssignedTeam": "Identity and Access Support"
+  },
+  {
+    "ticketId": "DEV-1019",
+    "message": "Could you share your product roadmap and documentation on whether dark mode and custom branding will be supported in Q3?",
+    "expectedCategory": "General",
+    "expectedPriority": "Low",
+    "expectedAssignedTeam": "General Support"
+  },
+  {
+    "ticketId": "DEV-1020",
+    "message": "We are preparing for our annual compliance audit and need a copy of your SOC 2 Type II report and GDPR data processing addendum.",
+    "expectedCategory": "General",
+    "expectedPriority": "Medium",
+    "expectedAssignedTeam": "General Support"
+  },
+  {
+    "ticketId": "DEV-1021",
+    "message": "What are your standard customer support operating hours and SLA response times for enterprise tier customers?",
+    "expectedCategory": "General",
+    "expectedPriority": "Low",
+    "expectedAssignedTeam": "General Support"
+  },
+  {
+    "ticketId": "DEV-1022",
+    "message": "We would like to schedule an onboarding walkthrough webinar and training session for 15 new analysts joining our department next month.",
+    "expectedCategory": "General",
+    "expectedPriority": "Low",
+    "expectedAssignedTeam": "General Support"
+  },
+  {
+    "ticketId": "DEV-1023",
+    "message": "How can we submit feedback or a feature request for adding bulk tagging to the workspace organization settings?",
+    "expectedCategory": "General",
+    "expectedPriority": "Low",
+    "expectedAssignedTeam": "General Support"
+  },
+  {
+    "ticketId": "DEV-1024",
+    "message": "Where can I find the official terms of service and privacy policy regarding data residency in the Central India region?",
+    "expectedCategory": "General",
+    "expectedPriority": "Low",
+    "expectedAssignedTeam": "General Support"
+  }
+]

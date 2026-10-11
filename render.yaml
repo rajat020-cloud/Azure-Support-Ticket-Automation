@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: azure-support-ticket-automation-api
+    runtime: node
+    rootDir: backend
+    plan: free
+    buildCommand: npm ci && npm run build
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: CONFIDENCE_THRESHOLD
+        value: "0.45"
+      - key: MONGODB_URI
+        sync: false
+      - key: FRONTEND_ORIGIN
+        sync: false
+      - key: REVIEWER_API_KEY
+        sync: false

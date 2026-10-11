@@ -1,0 +1,17 @@
+[
+  {
+    "ticketId": "AMB-3001",
+    "message": "Need help urgently with our portal, something is wrong and we cannot proceed.",
+    "description": "Vague request lacking specific domain signals; should route to needs_review."
+  },
+  {
+    "ticketId": "AMB-3002",
+    "message": "I cannot log into the billing portal to download my invoice because the page crashes with a 500 error.",
+    "description": "Cross-category overlap between Access, Billing, and Technical signals; low margin between top categories triggers needs_review."
+  },
+  {
+    "ticketId": "AMB-3003",
+    "message": "Please check the issue we discussed earlier.",
+    "description": "Insufficiently informative message with no domain keywords; routes to needs_review."
+  }
+]
