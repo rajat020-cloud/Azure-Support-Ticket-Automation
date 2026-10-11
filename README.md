@@ -7,15 +7,16 @@
 
 ## 1. Candidate Details
 
-| Field | Value (Replace Placeholder Before Submission) |
+| Field | Value |
 | :--- | :--- |
-| **Candidate Name** | `[YOUR_FULL_NAME_HERE]` |
-| **Roll Number** | `[YOUR_UNIVERSITY_ROLL_NUMBER_HERE]` |
-| **Branch / Program** | `[YOUR_BRANCH_HERE, e.g., B.E. Computer Science & Engineering]` |
-| **GitHub Repository URL** | `[YOUR_GITHUB_REPOSITORY_URL_HERE]` |
-| **Deployed Frontend URL (Vercel)** | `[YOUR_VERCEL_APP_URL_HERE — Pending Manual Deployment]` |
-| **Deployed Backend URL (Render)** | `[YOUR_RENDER_API_URL_HERE — Pending Manual Deployment]` |
-| **Demo Video Link** | `[YOUR_DEMO_VIDEO_URL_HERE]` |
+| **Candidate Name** | **Rajat Katnoria** |
+| **Roll Number** | **2311981414** |
+| **Branch / Program** | **BE(CSE)** — Chitkara University |
+| **GitHub Repository URL** | [https://github.com/rajat020-cloud/Azure-Support-Ticket-Automation](https://github.com/rajat020-cloud/Azure-Support-Ticket-Automation) |
+| **Deployed Frontend URL (Vercel)** | [https://azure-support-ticket-automation.vercel.app/](https://azure-support-ticket-automation.vercel.app/) |
+| **Deployed Backend URL (Render)** | [https://azure-support-ticket-automation.onrender.com](https://azure-support-ticket-automation.onrender.com) |
+| **Interactive Swagger API Docs** | [https://azure-support-ticket-automation.onrender.com/api/docs](https://azure-support-ticket-automation.onrender.com/api/docs) |
+| **Live Health Check Endpoint** | [https://azure-support-ticket-automation.onrender.com/api/health](https://azure-support-ticket-automation.onrender.com/api/health) |
 
 ---
 
