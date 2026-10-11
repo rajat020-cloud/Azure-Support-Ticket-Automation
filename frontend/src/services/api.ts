@@ -36,6 +36,13 @@ export function getApiBaseUrl(): string {
   if (configured && typeof configured === 'string' && configured.trim().length > 0) {
     return configured.trim().replace(/\/+$/, '');
   }
+  if (
+    typeof window !== 'undefined' &&
+    window.location.hostname !== 'localhost' &&
+    window.location.hostname !== '127.0.0.1'
+  ) {
+    return 'https://azure-support-ticket-automation.onrender.com';
+  }
   return 'http://localhost:5000';
 }
 
