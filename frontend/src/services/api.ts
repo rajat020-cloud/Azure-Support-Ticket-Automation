@@ -34,7 +34,11 @@ export class ApiClientError extends Error {
 export function getApiBaseUrl(): string {
   const configured = import.meta.env.VITE_API_BASE_URL || import.meta.env.API_BASE_URL;
   if (configured && typeof configured === 'string' && configured.trim().length > 0) {
-    return configured.trim().replace(/\/+$/, '');
+    return configured
+      .trim()
+      .replace(/^['"]+|['"]+$/g, '')
+      .replace(/\/+$/, '')
+      .replace(/\/api$/i, '');
   }
   if (
     typeof window !== 'undefined' &&

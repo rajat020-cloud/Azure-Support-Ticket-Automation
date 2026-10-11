@@ -36,7 +36,7 @@ export function getConfig(): AppConfig {
   const nodeEnv = process.env.NODE_ENV || 'development';
   const port = parsePort(process.env.PORT);
   const mongodbUri = process.env.MONGODB_URI || '';
-  const frontendOrigin = process.env.FRONTEND_ORIGIN || 'http://localhost:5173';
+  const frontendOrigin = process.env.FRONTEND_ORIGIN || '*';
   const reviewerApiKey =
     process.env.REVIEWER_API_KEY ||
     (nodeEnv === 'production' ? '' : 'dev-reviewer-secret-key-2025');
