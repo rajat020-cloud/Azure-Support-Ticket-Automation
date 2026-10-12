@@ -5,13 +5,20 @@
 
 ---
 
-## 1. Candidate Details
+## 1. Candidate & Project Overview
 
 | Field | Value |
 | :--- | :--- |
 | **Candidate Name** | **Rajat Katnoria** |
 | **Roll Number** | **2311981414** |
-| **Branch / Program** | **BE(CSE)** — Chitkara University |
+| **Branch / Program** | **BE(CSE) — Chitkara University** |
+| **Assessment** | **Cerevyn — Chitkara University Round One Technical Assessment** |
+| **Problem Statement** | **PS04 — Azure Support Ticket Automation** |
+| **Project Title** | **Azure Support Ticket Automation — Explainable AI Triage & Human-in-the-Loop Operations Platform** |
+| **Primary Stack** | **React 18 + TypeScript + Vite + Tailwind CSS** (Frontend) \| **Node.js + Express + TypeScript + Mongoose** (Backend) |
+| **Database** | **MongoDB Atlas (`azure_support_tickets` on `Cluster0`)** |
+| **Dataset & Held-Out Accuracy** | **39 Fictional Tickets** (`24` Development + `12` Held-Out Test + `3` Ambiguous Edge Cases) — **100% (`12/12`) Held-Out Accuracy** |
+| **Automated Test Suite** | **34 Passing Tests** (`29` Backend Unit & Supertest API Tests + `5` Frontend React Testing Library Tests) |
 | **GitHub Repository URL** | [https://github.com/rajat020-cloud/Azure-Support-Ticket-Automation](https://github.com/rajat020-cloud/Azure-Support-Ticket-Automation) |
 | **Deployed Frontend URL (Vercel)** | [https://azure-support-ticket-automation.vercel.app/](https://azure-support-ticket-automation.vercel.app/) |
 | **Deployed Backend URL (Render)** | [https://azure-support-ticket-automation.onrender.com](https://azure-support-ticket-automation.onrender.com) |
@@ -26,30 +33,34 @@ Enterprise cloud support teams receive a high volume of incoming tickets spannin
 
 **PS04 — Azure Support Ticket Automation** provides an explainable, human-in-the-loop AI-assisted REST API and operations dashboard that accepts a support ticket (`ticketId` and `message`) and deterministically produces:
 
-1. **Predicted Category**: `Billing`, `Technical`, `Access`, or `General`
+1. **Predicted Category**: `Billing`, `Technical`, `Access`, or `General` (along with 4-category score distribution `categoryScores`)
 2. **Recommended Priority**: `Low`, `Medium`, `High`, or `Critical` (via an independent, context-aware priority policy)
-3. **Assigned Support Team**: `Billing Support`, `Technical Support`, `Identity and Access Support`, or `General Support`
-4. **Concise Issue Summary**
-5. **Contextual Draft Response** (safe, non-committal, and clearly marked as a draft)
-6. **Classification Confidence Proxy** (`0.15` to `0.98`) & **Matched Signal Explanation**
-7. **Review Status**: `pending_review`, `needs_review` (for uncertain/ambiguous cases), or `approved`
-8. **Creation, Update, and Human Approval Timestamps & Metadata**
+3. **Deterministic SLA Target**: Automatic response and resolution SLA targets (`15m / 2h` for Critical, `1h / 4h` for High, `4h / 24h` for Medium, `24h / 72h` for Low)
+4. **Assigned Support Team**: `Billing Support`, `Technical Support`, `Identity and Access Support`, or `General Support`
+5. **Concise Issue Summary**
+6. **Contextual Draft Response** (safe, non-committal, and clearly marked as a draft)
+7. **Classification Confidence Proxy** (`0.15` to `0.98`) & **Matched Signal Explanation**
+8. **Review Status**: `pending_review`, `needs_review` (for uncertain/ambiguous cases), or `approved`
+9. **Immutable Audit Trail & Approval Metadata**: Tracks every ticket lifecycle action (`created`, `triaged`, `approved`) with actor, timestamp, and notes.
 
 **Strict Human-in-the-Loop Governance**:
 - The system **never automatically sends emails or customer messages**.
-- Draft responses remain unapproved until an authorized human reviewer explicitly confirms and signs off using a server-validated reviewer key (`POST /api/tickets/:ticketId/approve`).
-- Uncertain or ambiguous tickets (`isUncertain = true`) are automatically routed to `needs_review` and blocked from direct automated draft approval (`HTTP 422`).
+- Draft responses remain unapproved until an authorized human reviewer explicitly confirms and signs off using a signed Reviewer JWT or server-validated `x-reviewer-api-key` (`POST /api/tickets/:ticketId/approve`).
+- Uncertain or ambiguous tickets (`isUncertain = true`) are automatically routed to `needs_review` and blocked from direct automated draft approval (`HTTP 422`) until a specialist resolves them via Manual Triage (`PATCH /api/tickets/:ticketId/triage`).
 
 ---
 
 ## 3. Key Features
 
 - **Explainable Hybrid Classifier (No Python, No Paid APIs)**: Combines weighted domain phrase lexicons with TF-IDF cosine similarity trained strictly on the development corpus (`development_tickets.json`).
-- **Context-Aware Priority Policy**: Evaluates urgency, service outage scope, affected user counts, security compromise indicators, and explicit deadlines independently of category—preventing false `Critical` escalations on routine questions that merely contain alarming keywords.
-- **MongoDB Atlas Persistence with Mongoose**: Enforces a database-level unique index on `ticketId` (`E11000` $\rightarrow$ `HTTP 409 Conflict`), validates inputs prior to database writes, and aggregates live metrics.
-- **Enterprise Operations Dashboard**: Built with React 18, TypeScript, Vite, and Tailwind CSS, featuring live KPI cards, SVG category donut chart, priority bar chart, search/filter pagination, ticket inspection drawer, human approval workflow, and live held-out evaluation report.
+- **Live AI Explainability Sandbox (`POST /api/analyze`)**: Stateless preview mode on the **New Ticket** page that lets operators test how the AI classifies, prioritizes, scores all 4 categories, and drafts a response without saving to MongoDB.
+- **Context-Aware Priority & SLA Policy**: Evaluates urgency, service outage scope, affected user counts, security compromise indicators, and explicit deadlines independently of category—preventing false `Critical` escalations on routine questions that merely contain alarming keywords.
+- **Reviewer Sign-Up & Sign-In (`JWT` + `PBKDF2-SHA512`)**: Full Reviewer authentication (`POST /api/auth/register`, `POST /api/auth/login`, `GET /api/auth/me`) alongside `x-reviewer-api-key` support.
+- **3-Tab Ticket Inspector, Manual Triage & Audit Log**: Slide-over drawer with **Overview & Review**, **AI Signals & Scores**, and **Audit Trail** tabs, allowing specialists to override category/priority, edit drafts, resolve `needs_review` tickets, and copy approved responses.
+- **MongoDB Atlas Persistence with Mongoose**: Enforces database-level unique indexes on `ticketId` and `email` (`E11000` $\rightarrow$ `HTTP 409 Conflict`), validates inputs prior to database writes, and aggregates live metrics.
+- **Enterprise Operations Dashboard**: Built with React 18, TypeScript, Vite, and Tailwind CSS, featuring live KPI cards, SVG category donut chart, priority bar chart, quick status pills, `Ctrl+K` search, sorting, CSV export, and live held-out evaluation report.
 - **Swagger / OpenAPI 3.0 Documentation**: Interactive API explorer served at `/api/docs`.
-- **Comprehensive Automated Testing**: 27 backend tests (Vitest + Supertest) and 5 frontend tests (Vitest + React Testing Library) covering all 17 mandatory assessment scenarios.
+- **Comprehensive Automated Testing**: **29 backend tests** (Vitest + Supertest) and **5 frontend tests** (Vitest + React Testing Library) covering all mandatory and extended assessment scenarios.
 
 ---
 
@@ -59,7 +70,8 @@ Enterprise cloud support teams receive a high volume of incoming tickets spannin
 | :--- | :--- |
 | **Frontend** | React 18, TypeScript, Vite 6, Tailwind CSS 3, Lucide Icons |
 | **Backend** | Node.js ($\ge 20$), TypeScript, Express.js 4, Zod, Helmet, CORS, Express Rate Limit |
-| **Database** | MongoDB Atlas with Mongoose 8 |
+| **Database** | MongoDB Atlas with Mongoose 8 (`Ticket` & `User` models) |
+| **Authentication** | `PBKDF2-SHA512` password hashing + `HMAC-SHA256` JWT Bearer tokens & timing-safe `x-reviewer-api-key` |
 | **API Documentation** | Swagger UI Express (`OpenAPI 3.0.3` at `/api/docs`) |
 | **Automated Testing** | Vitest, Supertest, React Testing Library, JSDOM |
 | **Containerization** | Multi-stage Production `Dockerfile` (`node:20-alpine`, non-root `node` user) |
@@ -85,17 +97,17 @@ See [`docs/architecture.md`](./docs/architecture.md) for the full request flow a
 │   │   └── ambiguous_examples.json     # 3 ambiguous edge-case tickets for manual review testing
 │   ├── src/
 │   │   ├── config/                     # env.ts, database.ts, swagger.ts
-│   │   ├── controllers/                # ticketController.ts, healthController.ts
+│   │   ├── controllers/                # ticketController.ts, authController.ts, healthController.ts
 │   │   ├── middleware/                 # authMiddleware.ts, validateMiddleware.ts, errorMiddleware.ts
-│   │   ├── models/                     # Ticket.ts (Mongoose schema & unique index)
-│   │   ├── routes/                     # ticketRoutes.ts, healthRoutes.ts
+│   │   ├── models/                     # Ticket.ts, User.ts (Mongoose schemas & unique indexes)
+│   │   ├── routes/                     # ticketRoutes.ts, authRoutes.ts, healthRoutes.ts
 │   │   ├── services/                   # classifierService.ts, priorityService.ts, routingService.ts, draftService.ts, evaluationService.ts
 │   │   ├── utils/                      # runEvaluation.ts, seedDatabase.ts
-│   │   ├── app.ts                      # Express app setup
+│   │   ├── app.ts                      # Express app setup & CORS configuration
 │   │   └── server.ts                   # Server entrypoint
 │   ├── tests/
 │   │   ├── unit.services.test.ts       # 16 unit tests for classifier, priority, routing, drafts, evaluation
-│   │   └── api.integration.test.ts     # 11 API tests covering all 17 mandatory HTTP scenarios
+│   │   └── api.integration.test.ts     # 13 API tests covering all 19 HTTP & auth scenarios
 │   ├── .dockerignore
 │   ├── .env.example
 │   ├── Dockerfile
@@ -105,7 +117,7 @@ See [`docs/architecture.md`](./docs/architecture.md) for the full request flow a
 │   └── tsconfig.build.json
 ├── frontend/
 │   ├── src/
-│   │   ├── components/                 # Sidebar.tsx, Badge.tsx, TicketDetailPanel.tsx
+│   │   ├── components/                 # Sidebar.tsx, Badge.tsx, TicketDetailPanel.tsx, AuthModal.tsx
 │   │   ├── pages/                      # DashboardPage.tsx, NewTicketPage.tsx, TicketListPage.tsx, EvaluationPage.tsx, ApiDocsPage.tsx
 │   │   ├── services/                   # api.ts (centralized typed API client)
 │   │   ├── tests/                      # setup.ts, app.test.tsx (5 frontend tests)
@@ -143,9 +155,13 @@ See [`docs/architecture.md`](./docs/architecture.md) for the full request flow a
 - **MongoDB Atlas** cluster URI (or local MongoDB instance) for running the live server
 - **Docker** (optional, for building and running the backend container)
 
-### Installation
+### Clone & Install
 
 ```bash
+# Clone the repository
+git clone https://github.com/rajat020-cloud/Azure-Support-Ticket-Automation.git
+cd Azure-Support-Ticket-Automation
+
 # Install dependencies for both backend and frontend
 npm run install:all
 ```
@@ -168,10 +184,10 @@ Copy `backend/.env.example` to `backend/.env`:
 ```env
 NODE_ENV=development
 PORT=5000
-MONGODB_URI=mongodb+srv://<username>:<password>@<cluster>.mongodb.net/azure_support_tickets?retryWrites=true&w=majority
+MONGODB_URI=mongodb+srv://<username>:<password>@cluster0.e6fwwx1.mongodb.net/azure_support_tickets?retryWrites=true&w=majority&appName=Cluster0
 FRONTEND_ORIGIN=http://localhost:5173
-REVIEWER_API_KEY=replace-with-local-development-secret
-CONFIDENCE_THRESHOLD=0.45
+REVIEWER_API_KEY=dev-reviewer-secret-key-2025
+CONFIDENCE_THRESHOLD=0.55
 ```
 
 ### Frontend (`frontend/.env`)
@@ -182,16 +198,18 @@ Copy `frontend/.env.example` to `frontend/.env`:
 VITE_API_BASE_URL=http://localhost:5000
 ```
 
+*(In production on Vercel, `VITE_API_BASE_URL` or `API_BASE_URL` points to `https://azure-support-ticket-automation.onrender.com`.)*
+
 > [!WARNING]
 > Never expose `REVIEWER_API_KEY` or `MONGODB_URI` in frontend code or `VITE_` variables.
 
 ### MongoDB Atlas Setup
 
-1. Sign in to [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) and create a free `M0` cluster.
+1. Sign in to [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) and create an `M0` cluster (`Cluster0`).
 2. Under **Database Access**, create a database user with `readWrite` permissions on the `azure_support_tickets` database.
-3. Under **Network Access**, add your local IP address for local development.
+3. Under **Network Access**, add your IP address (and Render outbound IPs) to the IP Access List.
 4. Copy the connection string (`mongodb+srv://...`) into `backend/.env` as `MONGODB_URI`.
-5. When the backend starts, `connectToDatabase()` automatically calls `TicketModel.init()` to build the unique index on `ticketId`.
+5. When the backend starts, `connectToDatabase()` automatically calls `TicketModel.init()` and `UserModel.init()` to build unique indexes on `ticketId` and `email`.
 
 ---
 
@@ -213,7 +231,7 @@ npm run dev:frontend
 ### Run Automated Tests & Production Builds
 
 ```bash
-# Run all backend (27 tests) and frontend (5 tests) suites
+# Run all backend (29 tests) and frontend (5 tests) suites (34 total tests)
 npm test
 
 # Run backend tests only
