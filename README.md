@@ -246,15 +246,22 @@ npm run evaluate
 
 ## 9. REST API Endpoints & Example Payloads
 
-Interactive Swagger documentation is available at `http://localhost:5000/api/docs`.
+- **Live Production Swagger UI**: [https://azure-support-ticket-automation.onrender.com/api/docs](https://azure-support-ticket-automation.onrender.com/api/docs)
+- **Live Production Health Check**: [https://azure-support-ticket-automation.onrender.com/api/health](https://azure-support-ticket-automation.onrender.com/api/health)
+- **Local Swagger UI**: `http://localhost:5000/api/docs`
 
 | Method | Endpoint | Auth | Description |
 | :--- | :--- | :--- | :--- |
 | `GET` | `/api/health` | Public | Returns service health and MongoDB connection status (`200` or `503`). |
+| `POST` | `/api/analyze` | Public | Stateless live AI preview (classifies, prioritizes, calculates SLA & scores without DB write). |
 | `POST` | `/api/tickets` | Public | Validates, classifies, prioritizes, assigns team, generates summary & draft, and stores in MongoDB (`201`, `400`, `409`). |
-| `GET` | `/api/tickets` | Public | Lists tickets with `page`, `limit`, `search`, `category`, `priority`, `reviewStatus` filters. |
+| `GET` | `/api/tickets` | Public | Lists tickets with `page`, `limit`, `search`, `category`, `priority`, `reviewStatus`, and `sortBy` filters. |
 | `GET` | `/api/tickets/:ticketId` | Public | Retrieves a single ticket by `ticketId` (`200` or `404`). |
-| `POST` | `/api/tickets/:ticketId/approve` | `x-reviewer-api-key` | Approves an eligible draft (`200`, `401`, `403`, `404`, `409`, `422`). |
+| `PATCH` | `/api/tickets/:ticketId/triage` | JWT / `x-reviewer-api-key` | Manual specialist triage override (updates category, priority, team, summary, draft, and resolves uncertainty). |
+| `POST` | `/api/tickets/:ticketId/approve` | JWT / `x-reviewer-api-key` | Approves an eligible draft (`200`, `401`, `403`, `404`, `409`, `422`). |
+| `POST` | `/api/auth/register` | Public | Registers a new Reviewer account (`PBKDF2-SHA512` password hash + `HS256` JWT). |
+| `POST` | `/api/auth/login` | Public | Authenticates a Reviewer account and returns a signed JWT. |
+| `GET` | `/api/auth/me` | Bearer JWT | Returns the authenticated Reviewer profile. |
 | `GET` | `/api/metrics` | Public | Returns live MongoDB aggregate counts by category, priority, and review status. |
 | `GET` | `/api/evaluation` | Public | Executes classifier against `held_out_test_tickets.json` and returns evaluation metrics. |
 | `GET` | `/api/docs` | Public | Swagger / OpenAPI 3.0 UI. |
@@ -352,44 +359,48 @@ If `MONGODB_URI` or `REVIEWER_API_KEY` (in production mode) is omitted, the cont
 
 ## 12. Render Backend Deployment Guide
 
+- **Live Deployed Render Backend**: [https://azure-support-ticket-automation.onrender.com](https://azure-support-ticket-automation.onrender.com)
+- **Live Render Health Check**: [https://azure-support-ticket-automation.onrender.com/api/health](https://azure-support-ticket-automation.onrender.com/api/health)
+- **Live Render Swagger Docs**: [https://azure-support-ticket-automation.onrender.com/api/docs](https://azure-support-ticket-automation.onrender.com/api/docs)
+
 A `render.yaml` Blueprint is included at the repository root. To deploy manually or via Blueprint:
 
-1. **Create Service from GitHub**: Log in to [Render](https://render.com/), click **New + $\rightarrow$ Web Service**, and connect your GitHub repository.
+1. **Create Service from GitHub**: Log in to [Render](https://render.com/), click **New + $\rightarrow$ Web Service**, and connect [https://github.com/rajat020-cloud/Azure-Support-Ticket-Automation](https://github.com/rajat020-cloud/Azure-Support-Ticket-Automation).
 2. **Configure Build & Runtime Settings**:
    - **Root Directory**: `backend`
-   - **Runtime**: `Node`
-   - **Build Command**: `npm ci && npm run build`
-   - **Start Command**: `npm start`
+   - **Runtime**: `Docker` (uses `backend/Dockerfile`) or `Node` (`npm ci && npm run build` / `npm start`)
    - **Health Check Path**: `/api/health`
 3. **Configure Environment Variables in Render**:
    - `NODE_ENV` = `production`
-   - `CONFIDENCE_THRESHOLD` = `0.45`
+   - `CONFIDENCE_THRESHOLD` = `0.55`
    - `MONGODB_URI` = your MongoDB Atlas `mongodb+srv://...` connection string
-   - `REVIEWER_API_KEY` = a strong random secret key for draft approvals
-   - `FRONTEND_ORIGIN` = your deployed Vercel URL (e.g., `https://your-project.vercel.app`)
+   - `REVIEWER_API_KEY` = a strong secret key for draft approvals
+   - `FRONTEND_ORIGIN` = `https://azure-support-ticket-automation.vercel.app`
 4. **Configure MongoDB Atlas Network Access**:
-   - Copy your Render service's **Outbound Static IP Addresses** from the Render Dashboard (*Connect $\rightarrow$ Outbound*) and add them to **MongoDB Atlas $\rightarrow$ Network Access $\rightarrow$ IP Access List** (preferring specific outbound IPs over `0.0.0.0/0`).
+   - Copy your Render service's **Outbound Static IP Addresses** from the Render Dashboard (*Connect $\rightarrow$ Outbound*) and add them to **MongoDB Atlas $\rightarrow$ Network Access $\rightarrow$ IP Access List**.
 5. **Deploy & Inspect Logs**: Click **Deploy Web Service** and verify in the Render logs that `[DB] Connected to MongoDB` and `[SERVER] ... listening on http://0.0.0.0:<PORT>` appear.
-6. **Verify `/api/health`**: Visit `https://<your-render-service>.onrender.com/api/health` and confirm `{"status":"healthy","database":{"connected":true,"state":"connected"}}`.
+6. **Verify `/api/health`**: Visit [https://azure-support-ticket-automation.onrender.com/api/health](https://azure-support-ticket-automation.onrender.com/api/health) and confirm `{"status":"healthy","database":{"connected":true,"state":"connected"}}`.
 7. **Test Ticket Creation & Retrieval**: Send a `POST` request to `/api/tickets` and `GET` `/api/tickets` to verify end-to-end persistence.
 
 ---
 
 ## 13. Vercel Frontend Deployment Guide
 
-1. **Import Repository into Vercel**: Log in to [Vercel](https://vercel.com/), click **Add New... $\rightarrow$ Project**, and import your GitHub repository.
+- **Live Deployed Vercel Frontend**: [https://azure-support-ticket-automation.vercel.app/](https://azure-support-ticket-automation.vercel.app/)
+
+1. **Import Repository into Vercel**: Log in to [Vercel](https://vercel.com/), click **Add New... $\rightarrow$ Project**, and import [https://github.com/rajat020-cloud/Azure-Support-Ticket-Automation](https://github.com/rajat020-cloud/Azure-Support-Ticket-Automation).
 2. **Set Frontend Root Directory**: Set **Root Directory** to `frontend`.
 3. **Configure Build Settings**:
    - **Framework Preset**: `Vite`
    - **Build Command**: `npm run build`
    - **Output Directory**: `dist`
 4. **Add Production Environment Variable**:
-   - Add `VITE_API_BASE_URL` = `https://<your-actual-render-backend>.onrender.com` (no trailing slash).
+   - Add `VITE_API_BASE_URL` (or `API_BASE_URL`) = `https://azure-support-ticket-automation.onrender.com` (no trailing slash).
 5. **Routing Rules**: `frontend/vercel.json` is pre-configured to rewrite SPA routes to `/index.html`.
-6. **Deploy the Frontend**: Click **Deploy** and note your assigned `.vercel.app` URL.
-7. **Update Render CORS**: In your Render backend environment variables, set `FRONTEND_ORIGIN` to your exact Vercel URL (`https://<your-app>.vercel.app`) and save.
-8. **Redeploy When Environment Variables Change**: Whenever `VITE_API_BASE_URL` is changed in Vercel, trigger a new deployment so Vite embeds the updated URL at build time.
-9. **Verify Deployed Workflow**: Open the Vercel URL, submit a ticket, inspect its classification, and approve a draft using your `REVIEWER_API_KEY`.
+6. **Deploy the Frontend**: Click **Deploy** and access [https://azure-support-ticket-automation.vercel.app/](https://azure-support-ticket-automation.vercel.app/).
+7. **Update Render CORS**: In your Render backend environment variables, set `FRONTEND_ORIGIN` to `https://azure-support-ticket-automation.vercel.app` and save.
+8. **Redeploy When Environment Variables Change**: Whenever `VITE_API_BASE_URL` / `API_BASE_URL` is changed in Vercel, trigger a new deployment so Vite embeds the updated URL at build time.
+9. **Verify Deployed Workflow**: Open [https://azure-support-ticket-automation.vercel.app/](https://azure-support-ticket-automation.vercel.app/), submit a ticket, inspect its classification, and approve a draft using your Reviewer account or `REVIEWER_API_KEY`.
 
 ---
 
